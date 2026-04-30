@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORSCHE COMPLETE | Полный каталог всех моделей и модификаций</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <!-- ЛЕВАЯ БОКОВАЯ ПАНЕЛЬ - МОДЕЛИ -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fab fa-porsche"></i>
+                <div>
+                    <span>PORSCHE</span>
+                    <small>COMPLETE CATALOG</small>
+                </div>
+            </div>
+            
+            <div class="stats-panel">
+                <div class="stat-item">
+                    <i class="fas fa-car"></i>
+                    <span id="totalModels">0</span>
+                    <small>модификаций</small>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-heart"></i>
+                    <span id="favStat">0</span>
+                    <small>в избранном</small>
+                </div>
+            </div>
+
+            <div class="model-list">
+                <h3><i class="fas fa-list-ul"></i> МОДЕЛЬНЫЙ РЯД</h3>
+                <div class="model-buttons" id="modelButtons"></div>
+            </div>
+
+            <div class="sidebar-buttons">
+                <button class="btn-testdrive" id="testDriveBtn">
+                    <i class="fas fa-calendar-check"></i> Тест-драйв
+                </button>
+                <button class="btn-favorites" id="showFavoritesBtn">
+                    <i class="fas fa-heart"></i> Избранное
+                    <span class="badge" id="favoritesBadge">0</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- ОСНОВНОЙ КОНТЕНТ -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Поиск по модели, двигателю, характеристикам...">
+                </div>
+                <div class="top-actions">
+                    <div class="action-icon" id="compareBtn">
+                        <i class="fas fa-chart-simple"></i>
+                        <span class="badge" id="compareBadge">0</span>
+                    </div>
+                    <div class="action-icon" id="cartBtn">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge" id="cartBadge">0</span>
+                    </div>
+                    <div class="action-icon" id="settingsBtn">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ФИЛЬТРЫ -->
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <label><i class="fas fa-calendar"></i> Год выпуска</label>
+                    <select id="yearFilter"><option value="all">Все</option></select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-oil-can"></i> Двигатель</label>
+                    <select id="engineFilter">
+                        <option value="all">Все</option>
+                        <option value="Бензиновый">Бензиновый</option>
+                        <option value="Электрический">Электрический</option>
+                        <option value="Гибрид">Гибрид</option>
+                        <option value="Дизельный">Дизельный</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-gauge-high"></i> Мощность (л.с.)</label>
+                    <div class="range-wrapper">
+                        <span>200</span>
+                        <input type="range" id="powerFilter" min="200" max="900" step="10" value="900">
+                        <span>900+</span>
+                    </div>
+                    <span id="powerValue" class="range-value">до 900 л.с.</span>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-euro-sign"></i> Цена (€)</label>
+                    <div class="range-wrapper">
+                        <span>€50k</span>
+                        <input type="range" id="priceFilter" min="50000" max="600000" step="10000" value="600000">
+                        <span>€600k+</span>
+                    </div>
+                    <span id="priceValue" class="range-value">до €600 000+</span>
+                </div>
+                <button id="resetFilters" class="reset-btn"><i class="fas fa-undo"></i> Сброс</button>
+            </div>
+
+            <!-- ИНФО О МОДЕЛИ -->
+            <div class="model-hero" id="modelHero">
+                <h1 id="modelTitle">Porsche 911</h1>
+                <p id="modelDesc">Легендарный заднемоторный спорткар | 1963 - настоящее время</p>
+            </div>
+
+            <!-- СЧЁТЧИК РЕЗУЛЬТАТОВ -->
+            <div class="results-count" id="resultsCount">Найдено: 0 модификаций</div>
+
+            <!-- ГРИД МОДИФИКАЦИЙ -->
+            <div class="modifications-grid" id="modificationsGrid"></div>
+        </main>
+
+        <!-- ПАНЕЛЬ СРАВНЕНИЯ -->
+        <div class="compare-panel" id="comparePanel">
+            <div class="panel-header">
+                <h3><i class="fas fa-chart-line"></i> Сравнение (<span id="compareCount">0</span>/4)</h3>
+                <i class="fas fa-times close-panel" id="closeCompare"></i>
+            </div>
+            <div class="compare-items" id="compareItems"></div>
+            <div class="panel-footer">
+                <button id="clearCompare" class="clear-btn">Очистить всё</button>
+            </div>
+        </div>
+
+        <!-- КОРЗИНА -->
+        <div class="cart-panel" id="cartPanel">
+            <div class="panel-header">
+                <h3><i class="fas fa-shopping-bag"></i> Корзина</h3>
+                <i class="fas fa-times close-panel" id="closeCart"></i>
+            </div>
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-footer">
+                <div class="cart-total">Итого: <span id="cartTotal">€0</span></div>
+                <button id="checkoutBtn" class="checkout-btn">Оформить заказ</button>
+            </div>
+        </div>
+
+        <!-- МОДАЛЬНОЕ ОКНО ДЕТАЛЕЙ -->
+        <div class="modal" id="detailsModal">
+            <div class="modal-content modal-large">
+                <span class="close-modal">&times;</span>
+                <div id="modalDetails"></div>
+            </div>
+        </div>
+
+        <!-- МОДАЛЬНОЕ ОКНО ТЕСТ-ДРАЙВА -->
+        <div class="modal" id="testdriveModal">
+            <div class="modal-content">
+                <span class="close-modal close-testdrive">&times;</span>
+                <h2><i class="fas fa-road"></i> Запись на тест-драйв</h2>
+                <form id="testdriveForm">
+                    <div class="form-group"><input type="text" placeholder="Ваше имя" required></div>
+                    <div class="form-group"><input type="tel" placeholder="Телефон" required></div>
+                    <div class="form-group"><input type="email" placeholder="Email"></div>
+                    <div class="form-group"><select id="testdriveModel"><option>Выберите модель</option></select></div>
+                    <button type="submit" class="submit-btn">Записаться</button>
+                </form>
+                <div class="form-success" style="display:none;color:green;text-align:center;margin-top:1rem"></div>
+            </div>
+        </div>
+
+        <div class="overlay" id="overlay"></div>
+        <div class="toast" id="toast"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
